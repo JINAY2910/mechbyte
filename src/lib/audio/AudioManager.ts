@@ -7,15 +7,41 @@ import {
 
 export class AudioManager {
   private ctx: AudioContext | null = null;
+  private rawBuffer: ArrayBuffer | null = null;
   private audioBuffer: AudioBuffer | null = null;
   private enabled = true;
   private volume = 0.7;
   private loading: Promise<void> | null = null;
 
+  constructor() {
+    if (typeof window !== "undefined") {
+      const resumeContext = (e: Event) => {
+        if (e.isTrusted) {
+          if (!this.ctx) {
+            this.init();
+          } else if (this.ctx.state === "suspended") {
+            void this.ctx.resume();
+          }
+        }
+      };
+      window.addEventListener("click", resumeContext, { passive: true });
+      window.addEventListener("touchstart", resumeContext, { passive: true });
+    }
+  }
+
   init() {
     if (typeof window === "undefined") return;
-    if (!this.ctx) this.ctx = new AudioContext();
-    if (this.ctx.state === "suspended") void this.ctx.resume();
+    if (!this.ctx) {
+      try {
+        const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+        this.ctx = new AudioContextClass();
+      } catch (e) {
+        console.warn("Web Audio API is not supported in this browser", e);
+      }
+    }
+    if (this.ctx && this.ctx.state === "suspended") {
+      void this.ctx.resume();
+    }
   }
 
   setEnabled(enabled: boolean) {
@@ -33,35 +59,55 @@ export class AudioManager {
 
   async preload(_pack?: SoundPack) {
     if (this.loading) return this.loading;
-    this.init();
-    if (!this.ctx) return;
 
     this.loading = (async () => {
       const ab = await getSoundBuffer();
-      if (!ab || !this.ctx) return;
+      if (!ab) return;
+      this.rawBuffer = ab;
+
+      // Decode using OfflineAudioContext immediately to avoid any autoplay warnings
       try {
-        this.audioBuffer = await this.ctx.decodeAudioData(ab.slice(0));
-      } catch {
-        this.audioBuffer = null;
+        const OfflineCtxClass = window.OfflineAudioContext || (window as any).webkitOfflineAudioContext;
+        if (OfflineCtxClass) {
+          const offlineCtx = new OfflineCtxClass(1, 1, 44100);
+          this.audioBuffer = await offlineCtx.decodeAudioData(ab.slice(0));
+        }
+      } catch (err) {
+        // Fallback to normal decode on user gesture
+        if (this.ctx && !this.audioBuffer) {
+          try {
+            this.audioBuffer = await this.ctx.decodeAudioData(ab.slice(0));
+          } catch {
+            this.audioBuffer = null;
+          }
+        }
       }
     })();
 
     return this.loading;
   }
 
-  play(key: string, code?: string) {
+  play(key: string, code?: string, isTrusted = false) {
     if (!this.enabled) return;
-    this.init();
-    if (!this.ctx) return;
 
-    if (this.audioBuffer) {
-      this.playSprite(key, code);
+    if (isTrusted) {
+      this.init();
+    }
+
+    if (!this.ctx || this.ctx.state === "suspended" || !this.audioBuffer) {
+      // Decode raw buffer if it wasn't decoded yet and ctx is running
+      if (this.ctx && this.ctx.state === "running" && this.rawBuffer && !this.audioBuffer) {
+        void this.ctx.decodeAudioData(this.rawBuffer.slice(0))
+          .then((decoded) => {
+            this.audioBuffer = decoded;
+            this.playSprite(key, code);
+          })
+          .catch(() => {});
+      }
       return;
     }
 
-    void this.preload().then(() => {
-      if (this.audioBuffer) this.playSprite(key, code);
-    });
+    this.playSprite(key, code);
   }
 
   private playSprite(key: string, code?: string) {
@@ -72,8 +118,6 @@ export class AudioManager {
     const resolved = resolveSoundCode(key, code);
     const slice = SOUND_DEFINES_DOWN[resolved] ?? SOUND_DEFINES_DOWN.KeyA;
     const [startMs, durationMs] = slice;
-
-    if (ctx.state === "suspended") void ctx.resume();
 
     const source = ctx.createBufferSource();
     source.buffer = buffer;

@@ -259,7 +259,7 @@ export function useTypingTest() {
       recordKey(e.code);
       if (audioEnabled) {
         void audioManager.preload(soundPack);
-        audioManager.play(e.key, e.code);
+        audioManager.play(e.key, e.code, e.isTrusted);
       }
 
       if (mode === "zen") {
