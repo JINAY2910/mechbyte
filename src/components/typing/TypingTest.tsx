@@ -129,7 +129,7 @@ export function TypingTest({
       className="flex w-full max-w-5xl md:flex-1 flex-col items-center justify-between gap-6 md:gap-0"
     >
       <div className={cn(
-        "w-full md:flex-1 flex items-center justify-center md:pt-[52px] transition-all duration-300",
+        "w-full md:flex-1 flex items-center justify-center md:pt-[5vh] transition-all duration-300",
         timedFocus && "focus-blur",
         (status === "active" || inputFocused) && "max-lg:h-0 max-lg:opacity-0 max-lg:pointer-events-none overflow-hidden"
       )}>

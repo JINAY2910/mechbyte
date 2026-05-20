@@ -29,7 +29,14 @@ export function KeyboardVisualizer({ pressedKeys, onKeyClick }: KeyboardVisualiz
       const parentWidth = wrap.clientWidth;
       const unscaledWidth = inner.scrollWidth;
       const unscaledHeight = inner.scrollHeight;
-      const s = Math.min(1, parentWidth / unscaledWidth);
+      
+      const widthScale = parentWidth / unscaledWidth;
+      
+      // 820px is the threshold for a full scale keyboard.
+      // Below 820px window height, we scale the keyboard down proportionally to fit the shorter viewport.
+      const heightScale = typeof window !== "undefined" ? window.innerHeight / 820 : 1;
+      
+      const s = Math.min(1, widthScale, heightScale);
 
       setDimensions({
         width: unscaledWidth,
@@ -41,7 +48,17 @@ export function KeyboardVisualizer({ pressedKeys, onKeyClick }: KeyboardVisualiz
     update();
     const ro = new ResizeObserver(update);
     ro.observe(wrap);
-    return () => ro.disconnect();
+
+    if (typeof window !== "undefined") {
+      window.addEventListener("resize", update);
+    }
+
+    return () => {
+      ro.disconnect();
+      if (typeof window !== "undefined") {
+        window.removeEventListener("resize", update);
+      }
+    };
   }, [showKeyboard]);
 
   if (!showKeyboard) return null;
