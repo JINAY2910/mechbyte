@@ -69,7 +69,7 @@ export function Header() {
             </kbd>
           </button>
           <a
-            href="#"
+            href="https://github.com/JINAY2910/mechbyte"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 rounded-full bg-[#f5f3f7] px-4 py-2 text-sm font-medium text-[#0e0c11]"

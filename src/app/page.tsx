@@ -131,7 +131,7 @@ export default function HomePage() {
              <p className="mt-2 text-center text-[13px] text-[var(--color-text-dim)]">
               Built by Jinay Shah. The source code is available on{" "}
               <a
-                href="#"
+                href="https://github.com/JINAY2910/mechbyte"
                 className="text-[var(--color-text)] underline-offset-2 hover:text-[var(--color-crimson)] hover:underline"
                 target="_blank"
                 rel="noopener noreferrer"
