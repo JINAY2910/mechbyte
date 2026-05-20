@@ -122,11 +122,11 @@ export default function HomePage() {
           className={cn(
             "layout-shift hidden shrink-0 flex-col items-center justify-end overflow-hidden lg:flex",
             !isFinished && showKeyboard
-              ? "max-h-[450px] opacity-100 pb-4 pt-6 md:pt-8"
+              ? "max-h-[450px] opacity-100 pb-3 pt-4 md:pt-6"
               : "max-h-0 opacity-0 pb-0",
           )}
         >
-            <div className="w-full max-w-5xl scale-[0.95] px-2">
+            <div className="w-full max-w-5xl px-2">
               <KeyboardVisualizer
                 pressedKeys={pressedKeys}
                 onKeyClick={handleVirtualKeyClick}

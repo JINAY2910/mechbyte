@@ -126,10 +126,10 @@ export function TypingTest({
 
   return (
     <div
-      className="flex w-full max-w-5xl flex-col items-center gap-6 md:gap-10 transition-all duration-300"
+      className="flex w-full max-w-5xl flex-col items-center gap-6 md:gap-8 transition-all duration-300"
     >
       <div className={cn(
-        "w-full flex items-center justify-center transition-all duration-300 relative top-4 md:top-8",
+        "w-full flex items-center justify-center transition-all duration-300 relative top-3 md:top-6",
         timedFocus && "focus-blur",
         (status === "active" || inputFocused) && "max-lg:h-0 max-lg:opacity-0 max-lg:pointer-events-none overflow-hidden"
       )}>

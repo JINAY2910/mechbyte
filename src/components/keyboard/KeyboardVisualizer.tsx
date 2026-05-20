@@ -32,9 +32,9 @@ export function KeyboardVisualizer({ pressedKeys, onKeyClick }: KeyboardVisualiz
       
       const widthScale = parentWidth / unscaledWidth;
       
-      // 820px is the threshold for a full scale keyboard.
-      // Below 820px window height, we scale the keyboard down proportionally to fit the shorter viewport.
-      const heightScale = typeof window !== "undefined" ? window.innerHeight / 820 : 1;
+      // 900px is the threshold for a full scale keyboard.
+      // Below 900px window height, we scale the keyboard down proportionally to fit the shorter viewport.
+      const heightScale = typeof window !== "undefined" ? window.innerHeight / 900 : 1;
       
       const s = Math.min(1, widthScale, heightScale);
 
