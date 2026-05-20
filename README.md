@@ -13,7 +13,7 @@ A premium mechanical keyboard typing speed test. Built with Next.js, Framer Moti
 - Session results with WPM chart and key heatmap
 - Settings drawer with audio, display, and effect controls
 - Local storage persistence
-- Mobile Responsiveness: Fully responsive layout with custom viewport shifting to keep typing content above soft keyboards, and a collapsible configuration pill.
+- Mobile responsive
 
 ## Getting Started
 
