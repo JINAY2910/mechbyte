@@ -13,6 +13,7 @@ A premium mechanical keyboard typing speed test. Built with Next.js, Framer Moti
 - Session results with WPM chart and key heatmap
 - Settings drawer with audio, display, and effect controls
 - Local storage persistence
+- Mobile Responsiveness: Fully responsive layout with custom viewport shifting to keep typing content above soft keyboards, and a collapsible configuration pill.
 
 ## Getting Started
 
@@ -22,6 +23,17 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
+
+### Mobile Testing
+
+To test the application on a mobile device within the same Wi-Fi network:
+
+1. Find your computer's local IP address (e.g., `192.168.1.45`).
+2. Run the development server:
+   ```bash
+   npm run dev -- -H 0.0.0.0
+   ```
+3. Open `http://<your-computer-ip>:3000` on your mobile browser.
 
 ## Scripts
 
