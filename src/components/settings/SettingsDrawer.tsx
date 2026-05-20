@@ -96,135 +96,137 @@ export function SettingsDrawer() {
               </motion.div>
 
               <motion.div className="max-h-[min(70vh,560px)] overflow-y-auto px-6 pb-4">
-                <Section title="Test Configuration">
-                  {/* Mode Selector */}
-                  <div className="flex flex-col gap-1.5 py-1.5">
-                    <span className="text-[11px] font-medium text-[var(--color-text-dim)] uppercase tracking-wider">Mode</span>
-                    <div className="grid grid-cols-4 gap-1 rounded-xl bg-white/[0.03] p-1 border border-white/[0.04]">
-                      {(["time", "words", "quote", "zen"] as TestMode[]).map((m) => (
-                        <button
-                          key={m}
-                          type="button"
-                          onClick={() => setMode(m)}
-                          className={cn(
-                            "rounded-lg py-1.5 text-[11px] font-semibold capitalize transition-colors",
-                            mode === m
-                              ? "bg-[var(--color-crimson)] text-white shadow-sm"
-                              : "text-[var(--color-text-dim)] hover:bg-white/[0.04]"
-                          )}
-                        >
-                          {m}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Mode Options */}
-                  {mode === "time" && (
+                <div className="md:hidden">
+                  <Section title="Test Configuration">
+                    {/* Mode Selector */}
                     <div className="flex flex-col gap-1.5 py-1.5">
-                      <span className="text-[11px] font-medium text-[var(--color-text-dim)] uppercase tracking-wider">Duration</span>
+                      <span className="text-[11px] font-medium text-[var(--color-text-dim)] uppercase tracking-wider">Mode</span>
                       <div className="grid grid-cols-4 gap-1 rounded-xl bg-white/[0.03] p-1 border border-white/[0.04]">
-                        {([15, 30, 60, 120] as TimerDuration[]).map((t) => (
+                        {(["time", "words", "quote", "zen"] as TestMode[]).map((m) => (
                           <button
-                            key={t}
+                            key={m}
                             type="button"
-                            onClick={() => setTimer(t)}
-                            className={cn(
-                              "rounded-lg py-1.5 text-[11px] font-semibold transition-colors",
-                              timer === t
-                                ? "bg-[var(--color-crimson)] text-white shadow-sm"
-                                : "text-[var(--color-text-dim)] hover:bg-white/[0.04]"
-                            )}
-                          >
-                            {t}s
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {mode === "words" && (
-                    <div className="flex flex-col gap-1.5 py-1.5">
-                      <span className="text-[11px] font-medium text-[var(--color-text-dim)] uppercase tracking-wider">Word Count</span>
-                      <div className="grid grid-cols-4 gap-1 rounded-xl bg-white/[0.03] p-1 border border-white/[0.04]">
-                        {[10, 25, 50, 100].map((w) => (
-                          <button
-                            key={w}
-                            type="button"
-                            onClick={() => setWordCount(w)}
-                            className={cn(
-                              "rounded-lg py-1.5 text-[11px] font-semibold transition-colors",
-                              wordCount === w
-                                ? "bg-[var(--color-crimson)] text-white shadow-sm"
-                                : "text-[var(--color-text-dim)] hover:bg-white/[0.04]"
-                            )}
-                          >
-                            {w}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {mode === "quote" && (
-                    <div className="flex flex-col gap-1.5 py-1.5">
-                      <span className="text-[11px] font-medium text-[var(--color-text-dim)] uppercase tracking-wider">Quote Length</span>
-                      <div className="grid grid-cols-3 gap-1 rounded-xl bg-white/[0.03] p-1 border border-white/[0.04]">
-                        {(["short", "medium", "long"] as QuoteLength[]).map((q) => (
-                          <button
-                            key={q}
-                            type="button"
-                            onClick={() => setQuoteLength(q)}
+                            onClick={() => setMode(m)}
                             className={cn(
                               "rounded-lg py-1.5 text-[11px] font-semibold capitalize transition-colors",
-                              quoteLength === q
+                              mode === m
                                 ? "bg-[var(--color-crimson)] text-white shadow-sm"
                                 : "text-[var(--color-text-dim)] hover:bg-white/[0.04]"
                             )}
                           >
-                            {q}
+                            {m}
                           </button>
                         ))}
                       </div>
                     </div>
-                  )}
 
-                  {/* Difficulty */}
-                  <div className="flex flex-col gap-1.5 py-1.5">
-                    <span className="text-[11px] font-medium text-[var(--color-text-dim)] uppercase tracking-wider">Difficulty</span>
-                    <div className="grid grid-cols-2 gap-1 rounded-xl bg-white/[0.03] p-1 border border-white/[0.04]">
-                      {(["easy", "hard"] as const).map((d) => (
-                        <button
-                          key={d}
-                          type="button"
-                          onClick={() => setDifficulty(d)}
-                          className={cn(
-                            "rounded-lg py-1.5 text-[11px] font-semibold capitalize transition-colors",
-                            difficulty === d
-                              ? "bg-[var(--color-crimson)] text-white shadow-sm"
-                              : "text-[var(--color-text-dim)] hover:bg-white/[0.04]"
-                          )}
-                        >
-                          {d}
-                        </button>
-                      ))}
+                    {/* Mode Options */}
+                    {mode === "time" && (
+                      <div className="flex flex-col gap-1.5 py-1.5">
+                        <span className="text-[11px] font-medium text-[var(--color-text-dim)] uppercase tracking-wider">Duration</span>
+                        <div className="grid grid-cols-4 gap-1 rounded-xl bg-white/[0.03] p-1 border border-white/[0.04]">
+                          {([15, 30, 60, 120] as TimerDuration[]).map((t) => (
+                            <button
+                              key={t}
+                              type="button"
+                              onClick={() => setTimer(t)}
+                              className={cn(
+                                "rounded-lg py-1.5 text-[11px] font-semibold transition-colors",
+                                timer === t
+                                  ? "bg-[var(--color-crimson)] text-white shadow-sm"
+                                  : "text-[var(--color-text-dim)] hover:bg-white/[0.04]"
+                              )}
+                            >
+                              {t}s
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {mode === "words" && (
+                      <div className="flex flex-col gap-1.5 py-1.5">
+                        <span className="text-[11px] font-medium text-[var(--color-text-dim)] uppercase tracking-wider">Word Count</span>
+                        <div className="grid grid-cols-4 gap-1 rounded-xl bg-white/[0.03] p-1 border border-white/[0.04]">
+                          {[10, 25, 50, 100].map((w) => (
+                            <button
+                              key={w}
+                              type="button"
+                              onClick={() => setWordCount(w)}
+                              className={cn(
+                                "rounded-lg py-1.5 text-[11px] font-semibold transition-colors",
+                                wordCount === w
+                                  ? "bg-[var(--color-crimson)] text-white shadow-sm"
+                                  : "text-[var(--color-text-dim)] hover:bg-white/[0.04]"
+                              )}
+                            >
+                              {w}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {mode === "quote" && (
+                      <div className="flex flex-col gap-1.5 py-1.5">
+                        <span className="text-[11px] font-medium text-[var(--color-text-dim)] uppercase tracking-wider">Quote Length</span>
+                        <div className="grid grid-cols-3 gap-1 rounded-xl bg-white/[0.03] p-1 border border-white/[0.04]">
+                          {(["short", "medium", "long"] as QuoteLength[]).map((q) => (
+                            <button
+                              key={q}
+                              type="button"
+                              onClick={() => setQuoteLength(q)}
+                              className={cn(
+                                "rounded-lg py-1.5 text-[11px] font-semibold capitalize transition-colors",
+                                quoteLength === q
+                                  ? "bg-[var(--color-crimson)] text-white shadow-sm"
+                                  : "text-[var(--color-text-dim)] hover:bg-white/[0.04]"
+                              )}
+                            >
+                              {q}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Difficulty */}
+                    <div className="flex flex-col gap-1.5 py-1.5">
+                      <span className="text-[11px] font-medium text-[var(--color-text-dim)] uppercase tracking-wider">Difficulty</span>
+                      <div className="grid grid-cols-2 gap-1 rounded-xl bg-white/[0.03] p-1 border border-white/[0.04]">
+                        {(["easy", "hard"] as const).map((d) => (
+                          <button
+                            key={d}
+                            type="button"
+                            onClick={() => setDifficulty(d)}
+                            className={cn(
+                              "rounded-lg py-1.5 text-[11px] font-semibold capitalize transition-colors",
+                              difficulty === d
+                                ? "bg-[var(--color-crimson)] text-white shadow-sm"
+                                : "text-[var(--color-text-dim)] hover:bg-white/[0.04]"
+                            )}
+                          >
+                            {d}
+                          </button>
+                        ))}
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Punctuation & Numbers */}
-                  <SettingToggle
-                    label="Punctuation"
-                    description="Include commas, periods, etc."
-                    checked={punctuation}
-                    onChange={(v) => updateSettings({ punctuation: v })}
-                  />
-                  <SettingToggle
-                    label="Numbers"
-                    description="Include digits in typing text"
-                    checked={numbers}
-                    onChange={(v) => updateSettings({ numbers: v })}
-                  />
-                </Section>
+                    {/* Punctuation & Numbers */}
+                    <SettingToggle
+                      label="Punctuation"
+                      description="Include commas, periods, etc."
+                      checked={punctuation}
+                      onChange={(v) => updateSettings({ punctuation: v })}
+                    />
+                    <SettingToggle
+                      label="Numbers"
+                      description="Include digits in typing text"
+                      checked={numbers}
+                      onChange={(v) => updateSettings({ numbers: v })}
+                    />
+                  </Section>
+                </div>
 
                 <Section title="Typing">
                   <motion.div>
