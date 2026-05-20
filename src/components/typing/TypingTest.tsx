@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { RotateCcw } from "lucide-react";
 import { ControlBar } from "@/components/controls/ControlBar";
 import { TypingArea } from "@/components/typing/TypingArea";
@@ -30,6 +31,97 @@ export function TypingTest({
   const { mode, showLiveStats, typingStatus } = useAppStore();
   const started = status === "active" || status === "finished";
   const timedFocus = isTimedFocusActive(mode, typingStatus);
+
+  const hiddenInputRef = useRef<HTMLInputElement>(null);
+
+  // Focus hidden input on load, on change of status to idle, and on click anywhere on screen
+  useEffect(() => {
+    hiddenInputRef.current?.focus();
+
+    const handleGlobalClick = (e: MouseEvent) => {
+      if (useAppStore.getState().settingsOpen) return;
+
+      const target = e.target as HTMLElement;
+      if (
+        target.closest("button") ||
+        target.closest("a") ||
+        target.closest("input") ||
+        target.closest("select") ||
+        target.closest("textarea") ||
+        target.closest("[role='button']")
+      ) {
+        return;
+      }
+
+      hiddenInputRef.current?.focus();
+    };
+
+    window.addEventListener("click", handleGlobalClick);
+    return () => {
+      window.removeEventListener("click", handleGlobalClick);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (status === "idle") {
+      hiddenInputRef.current?.focus();
+    }
+  }, [status]);
+
+  const handleRestart = () => {
+    onRestart();
+    setTimeout(() => {
+      hiddenInputRef.current?.focus();
+    }, 50);
+  };
+
+  const handleHiddenInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (status === "finished") return;
+
+    const newValue = e.target.value;
+    const oldLen = input.length;
+    const newLen = newValue.length;
+
+    const dispatchKey = (key: string) => {
+      let code = "";
+      if (key === " ") {
+        code = "Space";
+      } else if (key === "Backspace") {
+        code = "Backspace";
+      } else if (key === "Enter") {
+        code = "Enter";
+      } else {
+        code = `Key${key.toUpperCase()}`;
+      }
+
+      window.dispatchEvent(
+        new KeyboardEvent("keydown", {
+          key,
+          code,
+          bubbles: true,
+          cancelable: true,
+        })
+      );
+      window.dispatchEvent(
+        new KeyboardEvent("keyup", {
+          key,
+          code,
+          bubbles: true,
+          cancelable: true,
+        })
+      );
+    };
+
+    if (newLen > oldLen) {
+      for (let i = oldLen; i < newLen; i++) {
+        dispatchKey(newValue[i]);
+      }
+    } else if (newLen < oldLen) {
+      for (let i = 0; i < oldLen - newLen; i++) {
+        dispatchKey("Backspace");
+      }
+    }
+  };
 
   return (
     <div
@@ -97,9 +189,31 @@ export function TypingTest({
         <TypingArea text={text} input={input} status={status} />
 
         <div className="mt-3 flex justify-center">
-          <RestartButton onRestart={onRestart} />
+          <RestartButton onRestart={handleRestart} />
         </div>
       </div>
+
+      {/* Hidden input to receive mobile soft keyboard events */}
+      <input
+        ref={hiddenInputRef}
+        type="text"
+        value={input}
+        onChange={handleHiddenInputChange}
+        className="absolute opacity-0 pointer-events-none"
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "1px",
+          height: "1px",
+          zIndex: -1,
+        }}
+        autoCapitalize="none"
+        autoComplete="off"
+        autoCorrect="off"
+        spellCheck={false}
+        aria-label="Typing input"
+      />
 
       <div className="mt-2 flex flex-col items-center">
         <div

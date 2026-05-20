@@ -12,6 +12,12 @@
   --color-key-case: #2a2633;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
   --font-sans: "Inter", system-ui, sans-serif;
+  --animate-cursor-blink: cursor-blink 1.2s infinite ease-in-out;
+
+  @keyframes cursor-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
 }
 
 @layer base {

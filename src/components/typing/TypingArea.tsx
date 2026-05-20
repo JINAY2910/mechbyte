@@ -123,7 +123,7 @@ export function TypingArea({ text, input, status }: TypingAreaProps) {
             >
               {isCursor && (
                 <span
-                  className="absolute -left-[1px] top-[0.15em] bottom-[0.15em] w-[2px] rounded-full bg-[var(--color-crimson)]"
+                  className="absolute -left-[1.5px] top-1/2 -translate-y-1/2 h-[1.15em] w-[3px] rounded-full bg-[var(--color-crimson)] animate-cursor-blink"
                   aria-hidden
                 />
               )}
@@ -137,7 +137,7 @@ export function TypingArea({ text, input, status }: TypingAreaProps) {
         {cursorPos >= chars.length && status !== "finished" && (
           <span ref={cursorRef} className="relative inline">
             <span
-              className="absolute -left-[1px] top-[0.15em] bottom-[0.15em] w-[2px] rounded-full bg-[var(--color-crimson)]"
+              className="absolute -left-[1.5px] top-1/2 -translate-y-1/2 h-[1.15em] w-[3px] rounded-full bg-[var(--color-crimson)] animate-cursor-blink"
               aria-hidden
             />
           </span>
