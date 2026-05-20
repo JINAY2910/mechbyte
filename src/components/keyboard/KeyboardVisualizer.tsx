@@ -27,6 +27,11 @@ export function KeyboardVisualizer({ pressedKeys, onKeyClick }: KeyboardVisualiz
 
     const update = () => {
       const s = Math.min(1, wrap.clientWidth / inner.scrollWidth);
+      console.log("Keyboard dimensions:", {
+        wrapWidth: wrap.clientWidth,
+        keyboardWidth: inner.scrollWidth,
+        scale: s
+      });
       setScale(Number.isFinite(s) && s > 0 ? s : 1);
     };
 
