@@ -12,11 +12,26 @@ interface ResultModalProps {
 }
 
 /* ─── helpers ────────────────────────────────────────────────────── */
-function calcConsistency(wpmPoints: { wpm: number }[]): number {
-  if (wpmPoints.length < 2) return 100;
-  const vals = wpmPoints.map((p) => p.wpm);
+function calcConsistency(wpmPoints: { time: number; wpm: number }[]): number {
+  if (!wpmPoints || wpmPoints.length < 2) return 100;
+
+  // Deduplicate points by second, keeping the last recorded WPM for each second
+  const map = new Map<number, number>();
+  for (const p of wpmPoints) {
+    if (p && typeof p.time === "number" && !isNaN(p.time) && typeof p.wpm === "number" && !isNaN(p.wpm)) {
+      map.set(p.time, p.wpm);
+    }
+  }
+
+  const vals = Array.from(map.entries())
+    .sort((a, b) => a[0] - b[0])
+    .map(([_, wpm]) => wpm);
+
+  if (vals.length < 2) return 100;
+  
   const mean = vals.reduce((a, b) => a + b, 0) / vals.length;
   if (mean === 0) return 100;
+
   const variance = vals.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / vals.length;
   const std = Math.sqrt(variance);
   return Math.round(Math.max(0, Math.min(100, 100 - (std / mean) * 100)));
