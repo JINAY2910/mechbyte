@@ -14,7 +14,7 @@ import type { KeyDef } from "@/data/keyboardLayout";
 
 /** HomePage component */
 export default function HomePage() {
-  const { mode, difficulty, addSession, soundPack, showKeyboard, typingStatus } =
+  const { mode, difficulty, addSession, soundPack, showKeyboard, typingStatus, inputFocused } =
     useAppStore();
   const timedFocus = isTimedFocusActive(mode, typingStatus);
   const {
@@ -100,7 +100,7 @@ export default function HomePage() {
             "layout-shift flex min-h-0 flex-1 flex-col px-6 transition-all duration-300",
             isFinished
               ? "justify-center px-10 py-2"
-              : status === "active"
+              : (status === "active" || inputFocused)
               ? "items-center justify-start pt-4 md:justify-center md:pt-0"
               : "items-center justify-center",
           )}

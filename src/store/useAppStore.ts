@@ -35,8 +35,10 @@ interface AppState extends AppSettings {
   quoteLength: QuoteLength;
   settingsOpen: boolean;
   typingStatus: TypingTestStatus;
+  inputFocused: boolean;
   sessionHistory: SessionHistoryEntry[];
   setTypingStatus: (status: TypingTestStatus) => void;
+  setInputFocused: (focused: boolean) => void;
   setDifficulty: (d: Difficulty) => void;
   setMode: (m: TestMode) => void;
   setTimer: (t: TimerDuration) => void;
@@ -74,9 +76,11 @@ export const useAppStore = create<AppState>()(
       quoteLength: "medium",
       settingsOpen: false,
       typingStatus: "idle",
+      inputFocused: false,
       sessionHistory: [],
 
       setTypingStatus: (typingStatus) => set({ typingStatus }),
+      setInputFocused: (inputFocused) => set({ inputFocused }),
       setDifficulty: (difficulty) => set({ difficulty }),
       setMode: (mode) => set({ mode }),
       setTimer: (timer) => set({ timer }),

@@ -28,7 +28,7 @@ export function TypingTest({
   timeLeft,
   onRestart,
 }: TypingTestProps) {
-  const { mode, showLiveStats, typingStatus } = useAppStore();
+  const { mode, showLiveStats, typingStatus, inputFocused, setInputFocused } = useAppStore();
   const started = status === "active" || status === "finished";
   const timedFocus = isTimedFocusActive(mode, typingStatus);
 
@@ -130,7 +130,7 @@ export function TypingTest({
       <div className={cn(
         "w-full transition-all duration-300",
         timedFocus && "focus-blur",
-        status === "active" && "max-md:h-0 max-md:opacity-0 max-md:pointer-events-none overflow-hidden"
+        (status === "active" || inputFocused) && "max-md:h-0 max-md:opacity-0 max-md:pointer-events-none overflow-hidden"
       )}>
         <ControlBar />
       </div>
@@ -203,6 +203,8 @@ export function TypingTest({
         type="text"
         value={input}
         onChange={handleHiddenInputChange}
+        onFocus={() => setInputFocused(true)}
+        onBlur={() => setInputFocused(false)}
         className="absolute opacity-0 pointer-events-none"
         style={{
           position: "absolute",

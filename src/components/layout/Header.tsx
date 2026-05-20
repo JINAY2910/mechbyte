@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { useAppStore } from "@/store/useAppStore";
 
 export function Header() {
-  const { audioEnabled, updateSettings, setSettingsOpen, mode, typingStatus } =
+  const { audioEnabled, updateSettings, setSettingsOpen, mode, typingStatus, inputFocused } =
     useAppStore();
   const blurred = isTimedFocusActive(mode, typingStatus);
 
@@ -19,7 +19,7 @@ export function Header() {
     }
   }, []);
 
-  const isMobileActive = typingStatus === "active";
+  const isMobileActive = (typingStatus === "active" || inputFocused) && typingStatus !== "finished";
 
   return (
     <header
