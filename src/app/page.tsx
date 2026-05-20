@@ -120,7 +120,7 @@ export default function HomePage() {
           className={cn(
             "layout-shift hidden shrink-0 flex-col items-center justify-end overflow-hidden lg:flex",
             !isFinished && showKeyboard
-              ? "max-h-[400px] opacity-100 pb-4"
+              ? "max-h-[450px] opacity-100 pb-4 pt-6 md:pt-8"
               : "max-h-0 opacity-0 pb-0",
           )}
         >

@@ -46,7 +46,7 @@ export function AppChrome({ children }: { children: ReactNode }) {
   }, [setSettingsOpen]);
 
   return (
-    <motion.div className="flex h-[100dvh] lg:h-screen w-full flex-col overflow-hidden">
+    <motion.div className="app-shell">
       <Header />
       {children}
       <SettingsDrawer />
