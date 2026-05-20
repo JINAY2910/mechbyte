@@ -126,10 +126,10 @@ export function TypingTest({
 
   return (
     <div
-      className="flex w-full max-w-5xl flex-col items-center gap-4 md:gap-8"
+      className="flex w-full max-w-5xl md:flex-1 flex-col items-center justify-between"
     >
       <div className={cn(
-        "w-full transition-all duration-300",
+        "w-full md:flex-1 flex items-center justify-center transition-all duration-300",
         timedFocus && "focus-blur",
         (status === "active" || inputFocused) && "max-md:h-0 max-md:opacity-0 max-md:pointer-events-none overflow-hidden"
       )}>
@@ -193,10 +193,28 @@ export function TypingTest({
 
         <TypingArea text={text} input={input} status={status} />
 
-        <div className="mt-2 md:mt-3 flex justify-center">
+        <div className="mt-4 flex flex-col items-center gap-1 md:gap-1.5">
           <RestartButton onRestart={handleRestart} />
+          
+          <div
+            className={cn(
+              "flex items-center gap-1.5 text-xs text-[var(--color-text-muted)]/50 transition-opacity duration-300",
+              timedFocus ? "opacity-0" : "opacity-100",
+            )}
+          >
+            <kbd className="rounded-[4px] bg-white/[0.06] px-1.5 py-0.5 font-mono text-[11px]">
+              tab
+            </kbd>
+            <span className="text-[var(--color-text-muted)]/30">+</span>
+            <kbd className="rounded-[4px] bg-white/[0.06] px-1.5 py-0.5 font-mono text-[11px]">
+              enter
+            </kbd>
+            <span className="ml-0.5">restart</span>
+          </div>
         </div>
       </div>
+
+      <div className="hidden md:block md:flex-1" />
 
       {/* Hidden input to receive mobile soft keyboard events */}
       <input
@@ -220,24 +238,6 @@ export function TypingTest({
         spellCheck={false}
         aria-label="Typing input"
       />
-
-      <div className="mt-2 flex flex-col items-center">
-        <div
-          className={cn(
-            "flex items-center gap-1.5 text-xs text-[var(--color-text-muted)]/50 transition-opacity duration-300",
-            timedFocus ? "opacity-0" : "opacity-100",
-          )}
-        >
-          <kbd className="rounded-[4px] bg-white/[0.06] px-1.5 py-0.5 font-mono text-[11px]">
-            tab
-          </kbd>
-          <span className="text-[var(--color-text-muted)]/30">+</span>
-          <kbd className="rounded-[4px] bg-white/[0.06] px-1.5 py-0.5 font-mono text-[11px]">
-            enter
-          </kbd>
-          <span className="ml-0.5">restart</span>
-        </div>
-      </div>
     </div>
   );
 }
