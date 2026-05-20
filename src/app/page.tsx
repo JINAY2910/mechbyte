@@ -97,9 +97,11 @@ export default function HomePage() {
       <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
         <main
           className={cn(
-            "layout-shift flex min-h-0 flex-1 flex-col px-6",
+            "layout-shift flex min-h-0 flex-1 flex-col px-6 transition-all duration-300",
             isFinished
               ? "justify-center px-10 py-2"
+              : status === "active"
+              ? "items-center justify-start pt-4 md:justify-center md:pt-0"
               : "items-center justify-center",
           )}
         >

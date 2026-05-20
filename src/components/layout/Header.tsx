@@ -19,11 +19,14 @@ export function Header() {
     }
   }, []);
 
+  const isMobileActive = typingStatus === "active";
+
   return (
     <header
       className={cn(
-        "layout-shift flex shrink-0 justify-center px-6 py-2.5 md:px-10 md:py-5",
+        "layout-shift flex shrink-0 justify-center px-6 py-2.5 md:px-10 md:py-5 transition-all duration-300",
         blurred && "focus-blur",
+        isMobileActive && "max-md:h-0 max-md:py-0 max-md:opacity-0 max-md:pointer-events-none overflow-hidden"
       )}
     >
       <div className="relative flex w-full max-w-5xl items-center justify-between">

@@ -127,7 +127,11 @@ export function TypingTest({
     <div
       className="flex w-full max-w-5xl flex-col items-center gap-2 md:gap-3.5"
     >
-      <div className={cn("w-full", timedFocus && "focus-blur")}>
+      <div className={cn(
+        "w-full transition-all duration-300",
+        timedFocus && "focus-blur",
+        status === "active" && "max-md:h-0 max-md:opacity-0 max-md:pointer-events-none overflow-hidden"
+      )}>
         <ControlBar />
       </div>
 
