@@ -54,13 +54,14 @@ export function TypingTest({
       }
 
       hiddenInputRef.current?.focus();
+      setInputFocused(true);
     };
 
     window.addEventListener("click", handleGlobalClick);
     return () => {
       window.removeEventListener("click", handleGlobalClick);
     };
-  }, []);
+  }, [setInputFocused]);
 
   useEffect(() => {
     if (status === "idle") {
@@ -203,7 +204,6 @@ export function TypingTest({
         type="text"
         value={input}
         onChange={handleHiddenInputChange}
-        onFocus={() => setInputFocused(true)}
         onBlur={() => setInputFocused(false)}
         className="absolute opacity-0 pointer-events-none"
         style={{
