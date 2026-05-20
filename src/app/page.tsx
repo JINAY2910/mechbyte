@@ -94,10 +94,10 @@ export default function HomePage() {
 
   return (
     <>
-      <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+      <div className="flex flex-1 flex-col">
         <main
           className={cn(
-            "layout-shift flex min-h-0 flex-1 flex-col px-6 transition-all duration-300",
+            "layout-shift flex flex-1 flex-col px-6 transition-all duration-300",
             isFinished
               ? "justify-center px-10 py-2"
               : (status === "active" || inputFocused)
@@ -120,7 +120,7 @@ export default function HomePage() {
           className={cn(
             "layout-shift hidden shrink-0 flex-col items-center justify-end overflow-hidden lg:flex",
             !isFinished && showKeyboard
-              ? "max-h-[52vh] opacity-100 pb-4"
+              ? "max-h-[400px] opacity-100 pb-4"
               : "max-h-0 opacity-0 pb-0",
           )}
         >
