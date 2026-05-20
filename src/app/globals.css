@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #0e0c11;
+  --color-bg-elevated: #16131c;
+  --color-crimson: #ff3b5c;
+  --color-text: #eceaf0;
+  --color-text-dim: #9b95a8;
+  --color-text-muted: #5c5768;
+  --color-key-alpha: #e8e4df;
+  --color-key-mod: #3a3644;
+  --color-key-case: #2a2633;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-sans: "Inter", system-ui, sans-serif;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: rgba(255, 59, 92, 0.3);
+    color: #fff;
+  }
+}
+
+@layer utilities {
+  /* styling group class */
+  .pill-group {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 0.1875rem;
+    padding: 0.25rem;
+    border-radius: 0.9375rem;
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .focus-blur {
+    filter: blur(5px);
+    opacity: 0.28;
+    pointer-events: none;
+    transition:
+      filter 0.35s ease,
+      opacity 0.35s ease;
+  }
+
+  .focus-zone {
+    position: relative;
+    z-index: 10;
+  }
+
+  .layout-shift {
+    transition:
+      transform 0.55s cubic-bezier(0.23, 1, 0.32, 1),
+      opacity 0.45s ease,
+      max-height 0.55s cubic-bezier(0.23, 1, 0.32, 1),
+      margin 0.45s cubic-bezier(0.23, 1, 0.32, 1),
+      padding 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .toolbar-surface {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 0.125rem;
+    padding: 0.25rem;
+    border-radius: 0.875rem;
+    background: rgba(255, 255, 255, 0.04);
+  }
+}
