@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { AtSign, Clock, Hash, Mountain, Quote, Sliders, Type } from "lucide-react";
 import { useAppStore } from "@/store/useAppStore";
@@ -37,87 +38,134 @@ export function ControlBar() {
     setSettingsOpen,
   } = useAppStore();
 
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
+  const [dimensions, setDimensions] = useState({ width: 896, height: 40, scale: 1 });
+
+  useEffect(() => {
+    const wrap = wrapRef.current;
+    const inner = innerRef.current;
+    if (!wrap || !inner) return;
+
+    const update = () => {
+      requestAnimationFrame(() => {
+        const wrapEl = wrapRef.current;
+        const innerEl = innerRef.current;
+        if (!wrapEl || !innerEl) return;
+
+        const parentWidth = wrapEl.clientWidth;
+        const unscaledWidth = innerEl.scrollWidth;
+        const unscaledHeight = innerEl.scrollHeight || 40;
+        const s = Math.min(1, parentWidth / unscaledWidth);
+
+        setDimensions({
+          width: unscaledWidth,
+          height: unscaledHeight,
+          scale: Number.isFinite(s) && s > 0 ? s : 1,
+        });
+      });
+    };
+
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(wrap);
+    return () => ro.disconnect();
+  }, [mode, difficulty, punctuation, numbers, timer, wordCount, quoteLength]);
+
   return (
     <div className="flex w-full justify-center">
       {/* Desktop View */}
-      <div className="hidden md:grid grid-cols-[1fr_auto_1fr] items-center w-full max-w-4xl gap-4">
-        {/* Group 1 — toggles */}
-        <div className="flex justify-end">
-          <div className="pill-group">
-            <Toggle active={punctuation} onClick={() => updateSettings({ punctuation: !punctuation })}>
-              <AtSign size={14} />
-              punctuation
-            </Toggle>
-            <Toggle active={numbers} onClick={() => updateSettings({ numbers: !numbers })}>
-              <Hash size={14} />
-              numbers
-            </Toggle>
-            <Sep />
-            <Toggle active={difficulty === "easy"} onClick={() => setDifficulty("easy")}>
-              easy
-            </Toggle>
-            <Toggle active={difficulty === "hard"} onClick={() => setDifficulty("hard")}>
-              hard
-            </Toggle>
-          </div>
-        </div>
-
-        {/* Group 2 — modes */}
-        <div className="flex justify-center">
-          <div className="pill-group">
-            {MODES.map((m) => (
-              <Selector
-                key={m.id}
-                active={mode === m.id}
-                layoutId="mode"
-                onClick={() => setMode(m.id)}
-              >
-                {m.icon}
-                {m.label}
-              </Selector>
-            ))}
-          </div>
-        </div>
-
-        {/* Group 3 — sub-options (single row so pill width fits content) */}
-        <div className="flex justify-start">
-          {mode !== "zen" && (
+      <div
+        ref={wrapRef}
+        className="hidden md:flex w-full justify-center overflow-hidden"
+      >
+        <div
+          className="relative"
+          style={{
+            width: dimensions.width * dimensions.scale,
+            height: dimensions.height * dimensions.scale,
+          }}
+        >
+          <div
+            ref={innerRef}
+            className="absolute left-1/2 top-0 origin-top flex items-center justify-center gap-4 w-max"
+            style={{
+              transform: `translateX(-50%) scale(${dimensions.scale})`,
+            }}
+          >
+            {/* Group 1 — toggles */}
             <div className="pill-group">
-              {mode === "time" &&
-                TIMERS.map((t) => (
-                  <Selector
-                    key={t}
-                    active={timer === t}
-                    layoutId="sub-time"
-                    onClick={() => setTimer(t)}
-                  >
-                    {t}
-                  </Selector>
-                ))}
-              {mode === "words" &&
-                WORD_COUNTS.map((w) => (
-                  <Selector
-                    key={w}
-                    active={wordCount === w}
-                    layoutId="sub-words"
-                    onClick={() => setWordCount(w)}
-                  >
-                    {w}
-                  </Selector>
-                ))}
-              {mode === "quote" &&
-                QUOTE_LENGTHS.map((q) => (
-                  <Selector
-                    key={q}
-                    active={quoteLength === q}
-                    layoutId="sub-quote"
-                    onClick={() => setQuoteLength(q)}
-                  >
-                    {q}
-                  </Selector>
-                ))}
+              <Toggle active={punctuation} onClick={() => updateSettings({ punctuation: !punctuation })}>
+                <AtSign size={14} />
+                punctuation
+              </Toggle>
+              <Toggle active={numbers} onClick={() => updateSettings({ numbers: !numbers })}>
+                <Hash size={14} />
+                numbers
+              </Toggle>
+              <Sep />
+              <Toggle active={difficulty === "easy"} onClick={() => setDifficulty("easy")}>
+                easy
+              </Toggle>
+              <Toggle active={difficulty === "hard"} onClick={() => setDifficulty("hard")}>
+                hard
+              </Toggle>
             </div>
-          )}
+
+            {/* Group 2 — modes */}
+            <div className="pill-group">
+              {MODES.map((m) => (
+                <Selector
+                  key={m.id}
+                  active={mode === m.id}
+                  layoutId="mode"
+                  onClick={() => setMode(m.id)}
+                >
+                  {m.icon}
+                  {m.label}
+                </Selector>
+              ))}
+            </div>
+
+            {/* Group 3 — sub-options (single row so pill width fits content) */}
+            {mode !== "zen" && (
+              <div className="pill-group">
+                {mode === "time" &&
+                  TIMERS.map((t) => (
+                    <Selector
+                      key={t}
+                      active={timer === t}
+                      layoutId="sub-time"
+                      onClick={() => setTimer(t)}
+                    >
+                      {t}
+                    </Selector>
+                  ))}
+                {mode === "words" &&
+                  WORD_COUNTS.map((w) => (
+                    <Selector
+                      key={w}
+                      active={wordCount === w}
+                      layoutId="sub-words"
+                      onClick={() => setWordCount(w)}
+                    >
+                      {w}
+                    </Selector>
+                  ))}
+                {mode === "quote" &&
+                  QUOTE_LENGTHS.map((q) => (
+                    <Selector
+                      key={q}
+                      active={quoteLength === q}
+                      layoutId="sub-quote"
+                      onClick={() => setQuoteLength(q)}
+                    >
+                      {q}
+                    </Selector>
+                  ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

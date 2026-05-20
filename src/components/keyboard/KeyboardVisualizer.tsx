@@ -15,7 +15,7 @@ export function KeyboardVisualizer({ pressedKeys, onKeyClick }: KeyboardVisualiz
   const { animationIntensity, showKeyboard } = useAppStore();
   const wrapRef  = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(1);
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0, scale: 1 });
 
   const unitSize = 38;
   const gap      = 4;
@@ -26,13 +26,16 @@ export function KeyboardVisualizer({ pressedKeys, onKeyClick }: KeyboardVisualiz
     if (!wrap || !inner) return;
 
     const update = () => {
-      const s = Math.min(1, wrap.clientWidth / inner.scrollWidth);
-      console.log("Keyboard dimensions:", {
-        wrapWidth: wrap.clientWidth,
-        keyboardWidth: inner.scrollWidth,
-        scale: s
+      const parentWidth = wrap.clientWidth;
+      const unscaledWidth = inner.scrollWidth;
+      const unscaledHeight = inner.scrollHeight;
+      const s = Math.min(1, parentWidth / unscaledWidth);
+
+      setDimensions({
+        width: unscaledWidth,
+        height: unscaledHeight,
+        scale: Number.isFinite(s) && s > 0 ? s : 1,
       });
-      setScale(Number.isFinite(s) && s > 0 ? s : 1);
     };
 
     update();
@@ -46,62 +49,72 @@ export function KeyboardVisualizer({ pressedKeys, onKeyClick }: KeyboardVisualiz
   return (
     <div ref={wrapRef} className="flex w-full justify-center overflow-hidden">
       <div
-        ref={innerRef}
-        className="relative origin-bottom"
-        style={{ transform: `scale(${scale})` }}
+        className="relative"
+        style={{
+          width: dimensions.width ? dimensions.width * dimensions.scale : "auto",
+          height: dimensions.height ? dimensions.height * dimensions.scale : "auto",
+        }}
       >
-        {/* ── crimson underglow ──────────────────────────────── */}
         <div
-          className="absolute inset-x-[8%] -bottom-4 h-8 rounded-full pointer-events-none"
-          style={{
-            background: "radial-gradient(ellipse, rgba(255,59,92,0.35) 0%, transparent 70%)",
-            filter: "blur(10px)",
-          }}
-          aria-hidden
-        />
-
-        {/* ── outer bezel / case body ───────────────────────── */}
-        <div
-          className="rounded-[18px] p-[11px]"
-          style={{
-            background: "linear-gradient(165deg, #2e2a3a 0%, #1c1a26 100%)",
-            boxShadow: [
-              "0 28px 60px rgba(0,0,0,0.7)",
-              "0 8px 20px rgba(0,0,0,0.4)",
-              "0 0 0 1px rgba(255,255,255,0.07)",
-              "inset 0 1px 0 rgba(255,255,255,0.09)",
-              "inset 0 -1px 0 rgba(0,0,0,0.3)",
-            ].join(", "),
-          }}
+          ref={innerRef}
+          className={`origin-top-left ${
+            dimensions.width ? "absolute left-0 top-0" : "relative"
+          }`}
+          style={{ transform: `scale(${dimensions.scale})` }}
         >
-          {/* ── inner plate / switch plate ────────────────── */}
+          {/* ── crimson underglow ──────────────────────────────── */}
           <div
-            className="rounded-[10px] p-[6px]"
+            className="absolute inset-x-[8%] -bottom-4 h-8 rounded-full pointer-events-none"
             style={{
-              background: "linear-gradient(180deg, #1e1b2b 0%, #171523 100%)",
+              background: "radial-gradient(ellipse, rgba(255,59,92,0.35) 0%, transparent 70%)",
+              filter: "blur(10px)",
+            }}
+            aria-hidden
+          />
+
+          {/* ── outer bezel / case body ───────────────────────── */}
+          <div
+            className="rounded-[18px] p-[11px]"
+            style={{
+              background: "linear-gradient(165deg, #2e2a3a 0%, #1c1a26 100%)",
               boxShadow: [
-                "inset 0 2px 8px rgba(0,0,0,0.55)",
-                "inset 0 0 0 1px rgba(0,0,0,0.45)",
-                "0 0 0 1px rgba(255,255,255,0.03)",
+                "0 28px 60px rgba(0,0,0,0.7)",
+                "0 8px 20px rgba(0,0,0,0.4)",
+                "0 0 0 1px rgba(255,255,255,0.07)",
+                "inset 0 1px 0 rgba(255,255,255,0.09)",
+                "inset 0 -1px 0 rgba(0,0,0,0.3)",
               ].join(", "),
             }}
           >
-            {/* ── key rows ──────────────────────────────── */}
-            <div className="flex flex-col" style={{ gap }}>
-              {KEYBOARD_LAYOUT.map((row, rowIdx) => (
-                <div key={rowIdx} className="flex" style={{ gap }}>
-                  {row.map((keyDef) => (
-                    <Keycap
-                      key={keyDef.id}
-                      keyDef={keyDef}
-                      pressed={pressedKeys.has(keyDef.code)}
-                      animationIntensity={animationIntensity}
-                      unitSize={unitSize}
-                      onKeyClick={onKeyClick}
-                    />
-                  ))}
-                </div>
-              ))}
+            {/* ── inner plate / switch plate ────────────────── */}
+            <div
+              className="rounded-[10px] p-[6px]"
+              style={{
+                background: "linear-gradient(180deg, #1e1b2b 0%, #171523 100%)",
+                boxShadow: [
+                  "inset 0 2px 8px rgba(0,0,0,0.55)",
+                  "inset 0 0 0 1px rgba(0,0,0,0.45)",
+                  "0 0 0 1px rgba(255,255,255,0.03)",
+                ].join(", "),
+              }}
+            >
+              {/* ── key rows ──────────────────────────────── */}
+              <div className="flex flex-col" style={{ gap }}>
+                {KEYBOARD_LAYOUT.map((row, rowIdx) => (
+                  <div key={rowIdx} className="flex" style={{ gap }}>
+                    {row.map((keyDef) => (
+                      <Keycap
+                        key={keyDef.id}
+                        keyDef={keyDef}
+                        pressed={pressedKeys.has(keyDef.code)}
+                        animationIntensity={animationIntensity}
+                        unitSize={unitSize}
+                        onKeyClick={onKeyClick}
+                      />
+                    ))}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>

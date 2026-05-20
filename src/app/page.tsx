@@ -101,7 +101,7 @@ export default function HomePage() {
             isFinished
               ? "justify-center px-10 py-2"
               : (status === "active" || inputFocused)
-              ? "items-center justify-start pt-4 md:justify-center md:pt-0"
+              ? "items-center justify-start pt-6 lg:justify-center lg:pt-0"
               : "items-center justify-center",
           )}
         >
