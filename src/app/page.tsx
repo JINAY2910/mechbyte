@@ -95,25 +95,27 @@ export default function HomePage() {
   return (
     <>
       <div className="flex flex-1 flex-col">
-        <main
-          className={cn(
-            "layout-shift flex flex-1 flex-col px-6 transition-all duration-300",
-            isFinished
-              ? "justify-center px-10 py-2"
-              : (status === "active" || inputFocused)
-              ? "items-center justify-start pt-6 lg:justify-center lg:pt-0"
-              : "items-center justify-center",
-          )}
-        >
-          <TypingTest
-            text={text}
-            input={input}
-            status={status}
-            liveWpm={liveWpm}
-            liveAccuracy={liveAccuracy}
-            timeLeft={timeLeft}
-            onRestart={reset}
-          />
+        <main className="layout-shift flex flex-1 flex-col px-6 md:px-10 transition-all duration-300">
+          <div
+            className={cn(
+              "w-full max-w-5xl flex flex-col items-center mx-auto transition-all duration-300",
+              isFinished
+                ? "my-auto py-2"
+                : (status === "active" || inputFocused)
+                ? "mt-6 mb-auto lg:my-auto lg:py-0"
+                : "my-auto",
+            )}
+          >
+            <TypingTest
+              text={text}
+              input={input}
+              status={status}
+              liveWpm={liveWpm}
+              liveAccuracy={liveAccuracy}
+              timeLeft={timeLeft}
+              onRestart={reset}
+            />
+          </div>
         </main>
 
         <footer

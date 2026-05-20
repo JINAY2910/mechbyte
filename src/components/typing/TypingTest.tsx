@@ -126,10 +126,10 @@ export function TypingTest({
 
   return (
     <div
-      className="flex w-full max-w-5xl md:flex-1 flex-col items-center justify-between gap-6 md:gap-0"
+      className="flex w-full max-w-5xl flex-col items-center gap-6 md:gap-10 transition-all duration-300"
     >
       <div className={cn(
-        "w-full md:flex-1 flex items-center justify-center md:pt-[5vh] transition-all duration-300",
+        "w-full flex items-center justify-center transition-all duration-300 relative top-4 md:top-8",
         timedFocus && "focus-blur",
         (status === "active" || inputFocused) && "max-lg:h-0 max-lg:opacity-0 max-lg:pointer-events-none overflow-hidden"
       )}>
@@ -213,8 +213,6 @@ export function TypingTest({
           </div>
         </div>
       </div>
-
-      <div className="hidden md:block md:flex-1" />
 
       {/* Hidden input to receive mobile soft keyboard events */}
       <input
