@@ -125,7 +125,7 @@ export function TypingTest({
 
   return (
     <div
-      className="flex w-full max-w-5xl flex-col items-center gap-3.5"
+      className="flex w-full max-w-5xl flex-col items-center gap-2 md:gap-3.5"
     >
       <div className={cn("w-full", timedFocus && "focus-blur")}>
         <ControlBar />
@@ -134,7 +134,7 @@ export function TypingTest({
       <div className="focus-zone relative w-full">
         <div
           className={cn(
-            "mb-4 flex h-9 items-center justify-between",
+            "mb-2 md:mb-4 flex h-7 md:h-9 items-center justify-between",
             !showLiveStats && !timedFocus && "pointer-events-none",
           )}
         >
@@ -188,7 +188,7 @@ export function TypingTest({
 
         <TypingArea text={text} input={input} status={status} />
 
-        <div className="mt-3 flex justify-center">
+        <div className="mt-2 md:mt-3 flex justify-center">
           <RestartButton onRestart={handleRestart} />
         </div>
       </div>

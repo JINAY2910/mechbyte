@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { AtSign, Clock, Hash, Mountain, Quote, Type } from "lucide-react";
+import { AtSign, Clock, Hash, Mountain, Quote, Sliders, Type } from "lucide-react";
 import { useAppStore } from "@/store/useAppStore";
 import type { QuoteLength, TestMode, TimerDuration } from "@/lib/types";
 
@@ -34,11 +34,13 @@ export function ControlBar() {
     setWordCount,
     setQuoteLength,
     updateSettings,
+    setSettingsOpen,
   } = useAppStore();
 
   return (
     <div className="flex w-full justify-center">
-      <div className="flex flex-wrap items-center justify-center gap-2.5">
+      {/* Desktop View */}
+      <div className="hidden md:flex flex-wrap items-center justify-center gap-2.5">
         {/* Group 1 — toggles */}
         <div className="pill-group">
           <Toggle active={punctuation} onClick={() => updateSettings({ punctuation: !punctuation })}>
@@ -112,6 +114,35 @@ export function ControlBar() {
           </div>
         )}
       </div>
+
+      {/* Mobile View - Sleek Status Pill (matches keythm style) */}
+      <button
+        type="button"
+        onClick={() => setSettingsOpen(true)}
+        className="flex md:hidden items-center justify-center gap-2 rounded-full bg-white/[0.04] px-4 py-2 border border-white/[0.06] text-[11px] font-medium text-[var(--color-text-dim)] shadow-sm active:scale-[0.98] transition-transform duration-100"
+      >
+        <span className="flex items-center gap-1.5 text-[var(--color-crimson)] capitalize">
+          {mode === "time" && <Clock size={12} strokeWidth={2.5} />}
+          {mode === "words" && <Type size={12} strokeWidth={2.5} />}
+          {mode === "quote" && <Quote size={12} strokeWidth={2.5} />}
+          {mode === "zen" && <Mountain size={12} strokeWidth={2.5} />}
+          {mode}
+        </span>
+        <Sep />
+        <span className="text-[var(--color-text)]">
+          {mode === "time" && `${timer}s`}
+          {mode === "words" && `${wordCount}w`}
+          {mode === "quote" && <span className="capitalize">{quoteLength}</span>}
+          {mode === "zen" && "zen"}
+        </span>
+        <Sep />
+        <span className="capitalize">{difficulty}</span>
+        {(punctuation || numbers) && <Sep />}
+        {punctuation && <AtSign size={11} className="text-[var(--color-crimson)]" />}
+        {numbers && <Hash size={11} className="text-[var(--color-crimson)]" />}
+        <Sep />
+        <Sliders size={12} className="text-[var(--color-text-muted)]" />
+      </button>
     </div>
   );
 }

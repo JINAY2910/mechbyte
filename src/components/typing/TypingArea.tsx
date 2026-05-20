@@ -57,7 +57,7 @@ export function TypingArea({ text, input, status }: TypingAreaProps) {
     return (
       <div
         ref={zenScrollRef}
-        className="relative h-[7.8rem] w-full overflow-y-auto overflow-x-hidden text-left text-[1.65rem] leading-relaxed text-[var(--color-text-muted)] select-none"
+        className="relative h-[5.5rem] md:h-[7.8rem] w-full overflow-y-auto overflow-x-hidden text-left text-[1.25rem] md:text-[1.65rem] leading-relaxed text-[var(--color-text-muted)] select-none"
         style={{ fontFamily }}
       >
         {input ? (
@@ -89,7 +89,7 @@ export function TypingArea({ text, input, status }: TypingAreaProps) {
   return (
     <div
       ref={viewportRef}
-      className="relative h-[7.8rem] w-full overflow-hidden text-left text-[1.65rem] leading-relaxed select-none"
+      className="relative h-[5.5rem] md:h-[7.8rem] w-full overflow-hidden text-left text-[1.25rem] md:text-[1.65rem] leading-relaxed select-none"
       style={{ fontFamily }}
       aria-label="Typing test text"
     >

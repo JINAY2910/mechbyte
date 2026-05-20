@@ -22,7 +22,7 @@ export function Header() {
   return (
     <header
       className={cn(
-        "layout-shift flex shrink-0 justify-center px-6 py-4 md:px-10 md:py-5",
+        "layout-shift flex shrink-0 justify-center px-6 py-2.5 md:px-10 md:py-5",
         blurred && "focus-blur",
       )}
     >
