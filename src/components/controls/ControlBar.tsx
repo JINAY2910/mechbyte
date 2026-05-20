@@ -40,79 +40,85 @@ export function ControlBar() {
   return (
     <div className="flex w-full justify-center">
       {/* Desktop View */}
-      <div className="hidden md:flex flex-wrap items-center justify-center gap-2.5">
+      <div className="hidden md:grid grid-cols-[1fr_auto_1fr] items-center w-full max-w-4xl gap-4">
         {/* Group 1 — toggles */}
-        <div className="pill-group">
-          <Toggle active={punctuation} onClick={() => updateSettings({ punctuation: !punctuation })}>
-            <AtSign size={14} />
-            punctuation
-          </Toggle>
-          <Toggle active={numbers} onClick={() => updateSettings({ numbers: !numbers })}>
-            <Hash size={14} />
-            numbers
-          </Toggle>
-          <Sep />
-          <Toggle active={difficulty === "easy"} onClick={() => setDifficulty("easy")}>
-            easy
-          </Toggle>
-          <Toggle active={difficulty === "hard"} onClick={() => setDifficulty("hard")}>
-            hard
-          </Toggle>
+        <div className="flex justify-end">
+          <div className="pill-group">
+            <Toggle active={punctuation} onClick={() => updateSettings({ punctuation: !punctuation })}>
+              <AtSign size={14} />
+              punctuation
+            </Toggle>
+            <Toggle active={numbers} onClick={() => updateSettings({ numbers: !numbers })}>
+              <Hash size={14} />
+              numbers
+            </Toggle>
+            <Sep />
+            <Toggle active={difficulty === "easy"} onClick={() => setDifficulty("easy")}>
+              easy
+            </Toggle>
+            <Toggle active={difficulty === "hard"} onClick={() => setDifficulty("hard")}>
+              hard
+            </Toggle>
+          </div>
         </div>
 
         {/* Group 2 — modes */}
-        <div className="pill-group">
-          {MODES.map((m) => (
-            <Selector
-              key={m.id}
-              active={mode === m.id}
-              layoutId="mode"
-              onClick={() => setMode(m.id)}
-            >
-              {m.icon}
-              {m.label}
-            </Selector>
-          ))}
+        <div className="flex justify-center">
+          <div className="pill-group">
+            {MODES.map((m) => (
+              <Selector
+                key={m.id}
+                active={mode === m.id}
+                layoutId="mode"
+                onClick={() => setMode(m.id)}
+              >
+                {m.icon}
+                {m.label}
+              </Selector>
+            ))}
+          </div>
         </div>
 
         {/* Group 3 — sub-options (single row so pill width fits content) */}
-        {mode !== "zen" && (
-          <div className="pill-group">
-            {mode === "time" &&
-              TIMERS.map((t) => (
-                <Selector
-                  key={t}
-                  active={timer === t}
-                  layoutId="sub-time"
-                  onClick={() => setTimer(t)}
-                >
-                  {t}
-                </Selector>
-              ))}
-            {mode === "words" &&
-              WORD_COUNTS.map((w) => (
-                <Selector
-                  key={w}
-                  active={wordCount === w}
-                  layoutId="sub-words"
-                  onClick={() => setWordCount(w)}
-                >
-                  {w}
-                </Selector>
-              ))}
-            {mode === "quote" &&
-              QUOTE_LENGTHS.map((q) => (
-                <Selector
-                  key={q}
-                  active={quoteLength === q}
-                  layoutId="sub-quote"
-                  onClick={() => setQuoteLength(q)}
-                >
-                  {q}
-                </Selector>
-              ))}
-          </div>
-        )}
+        <div className="flex justify-start">
+          {mode !== "zen" && (
+            <div className="pill-group">
+              {mode === "time" &&
+                TIMERS.map((t) => (
+                  <Selector
+                    key={t}
+                    active={timer === t}
+                    layoutId="sub-time"
+                    onClick={() => setTimer(t)}
+                  >
+                    {t}
+                  </Selector>
+                ))}
+              {mode === "words" &&
+                WORD_COUNTS.map((w) => (
+                  <Selector
+                    key={w}
+                    active={wordCount === w}
+                    layoutId="sub-words"
+                    onClick={() => setWordCount(w)}
+                  >
+                    {w}
+                  </Selector>
+                ))}
+              {mode === "quote" &&
+                QUOTE_LENGTHS.map((q) => (
+                  <Selector
+                    key={q}
+                    active={quoteLength === q}
+                    layoutId="sub-quote"
+                    onClick={() => setQuoteLength(q)}
+                  >
+                    {q}
+                  </Selector>
+                ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Mobile View - Sleek Status Pill (matches keythm style) */}

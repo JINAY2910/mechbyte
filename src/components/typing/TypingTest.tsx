@@ -126,7 +126,7 @@ export function TypingTest({
 
   return (
     <div
-      className="flex w-full max-w-5xl flex-col items-center gap-2 md:gap-3.5"
+      className="flex w-full max-w-5xl flex-col items-center gap-4 md:gap-8"
     >
       <div className={cn(
         "w-full transition-all duration-300",

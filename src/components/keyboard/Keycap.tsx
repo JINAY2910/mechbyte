@@ -111,7 +111,7 @@ export function Keycap({
           borderRadius: "5px 5px 3px 3px",
           border: `1px solid ${outerBorder}`,
           color: textColor,
-          fontSize:   isMod ? "8.5px" : "9.5px",
+          fontSize:   isMod ? "7.5px" : "8.5px",
           fontWeight: 600,
           letterSpacing: "0.01em",
           transform:  `translateY(${faceY}px)`,

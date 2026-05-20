@@ -17,8 +17,8 @@ export function KeyboardVisualizer({ pressedKeys, onKeyClick }: KeyboardVisualiz
   const innerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
 
-  const unitSize = 43;
-  const gap      = 5;
+  const unitSize = 38;
+  const gap      = 4;
 
   useEffect(() => {
     const wrap  = wrapRef.current;
